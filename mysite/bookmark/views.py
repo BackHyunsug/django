@@ -12,3 +12,6 @@ def test(request):
     msg = "This is Django Test"
     return HttpResponse(msg)
     
+def myname(request):
+    msg = "<h1>My name is Tom</h1>"
+    return HttpResponse(msg)
