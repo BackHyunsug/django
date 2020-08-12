@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     #새로만든 앱은 무조건 여기에 기술되어야 인식된다. 
     'bookmark.apps.BookmarkConfig',
     #패키지명.파일명.클래스명 
+    'blog.apps.BlogConfig',
     
     'django.contrib.admin',
     'django.contrib.auth',
