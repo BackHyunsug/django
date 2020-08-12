@@ -1,0 +1,112 @@
+클래스 - 붕어빵 틀 
+객체 - 붕어빵 
+
+집을 지을려고 - 설계도 
+
+아파트 설계도 - 클래스(실체가 없다)
+객체 - 아파트 풍림아이원 101동 101, 101동 102, ......
+파이썬 - 사람이 살아야 할 공간으로 바라보면 위개념이 정확히 일치
+설계도                   객체 
+class Test:             t1 = Test() 
+         a              t1.a 
+         b              t1.b
+         c              t1.c 
+         output()       print( Test.a  )
+
+클래스 내부 변수중에 객체들이 데이터를 읽어가기만 하는 변수도 있더라 
+클래스 변수-공유공간 
+
+클래스 - 변수와 함수의 결합(관련있는 것들끼리 묶자) 
+         데이터 + 기능 
+
+가위바위보 게임 - 객체 지향으로 설계 
+class  Game:           
+    컴퓨터 배열
+    사람 배열
+    승패 배열 
+
+    게임시작() - 함수 
+    승패() - 함수 1을 반환 컴퓨터승, 2사람승 3 무승부
+    결과() - 컴퓨터 바위 사람 가위 컴퓨터 승 
+-------------------------------------------------------
+class GameData
+    컴퓨터
+    사람 
+    승패 
+    승패따지는함수()
+
+class Game:
+    GameData 배열 
+    게임시작()
+
+
+1.가위바위보게임 - 클래스 가위바위게임 
+2.야구게임 
+3.행맨게임 
+4.로또번호 생성
+
+class  행렬타입:
+
+m1 =  행렬타입()
+m2 =  행렬타입()
+
+m3 = m1 + m2 
+
+
+class Person:
+
+p1 = Person()
+p2 = Person()
+p3 = p1 + p2 #이상해보여-안하는거 
+
+<html>
+    
+    <%
+    import pymysql
+
+#2. db와 연결하여연결객체를 만든다 
+
+try:
+
+    #mysql 기본포트는 3306, 만일 포트를 바꾸면 포트값을 전달해야한다
+    conn = pymysql.connect(host="localhost", #디비서버아이피
+            user='root',
+            password='1234',
+            db='mydb',
+            charset='utf8',
+            port = 5306
+    )
+
+    #커서를 만든다.  커서를  통해서 디비데이터를 읽고 쓸 수 있다
+    sql = "select empno, ename, job, sal from emp"
+    cursor = conn.cursor() # 커넥션객체를 통해 커서를 얻는다 
+
+    cursor.execute(sql) 
+    # sql을 실행시키고 그 결과는 내부적으로  커서가 가지고 있다. 
+    #커서로부터 데이타셋을 가져온다 
+    #데이터를 tuple타입으로 가져온다 
+    rows = cursor.fetchall()
+    for row in rows:
+        #print(row)
+        empno, ename, job, sal = row
+        print(empno, ename, job, sal)
+
+    conn.close() #연결닫기
+
+except Exception as e:
+    print(e.args[0])
+
+%>
+
+</html>
+
+기존의 개발방식 : html , css, javascript, python 하나의 파일에 존재한다
+                 항상 개발자의 손을 빌어야 디자인수정
+                 디자인을 대대적으로 수정하면 비지니스로직(프로그램)
+                 도 다시 만들어야 함 
+
+새로운 개발방식 :  MVT             
+                디자인  <===> 프로그램을 나누자 
+                template        model 
+                        view  template와  model 연계작업을 한다 
+               
