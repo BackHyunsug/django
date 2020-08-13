@@ -6,8 +6,24 @@
     <title>Document</title>
 </head>
 <body>
+    <!--<table>
+        <tr>
+            <td>이름</Td>
+            <td>전화번호</Td>
+        </tr>
+    </table>-->
+    <table style="border:1px solid red; width:70%;">
     {% for item in dataList %}
-        {{item.name}} {{item.phone}}<br>
+        <tr>
+            <td style="border:1px solid blue">{{item.name}}</td>
+            <td style="border:1px solid blue">{{item.phone}}</td>
+        </tr>
     {%endfor%}
+    </table>
+
+    {% load django_template_maths %}
+
+    {{ 10|add:5 }} # print 15
+
 </body>
 </html>

@@ -6,8 +6,10 @@
     <title>Document</title>
 </head>
 <body>
+    {% load django_template_maths %}
+   
     {% for i in range %}
-        {{i}}<br>
+        {{dan}} X {{i}}   = {{dan|mul:i}}<br>
     {% endfor %}
 </body>
 </html>
