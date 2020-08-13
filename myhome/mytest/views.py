@@ -20,7 +20,8 @@ def gugu(request, dan):
     result="" #클라이언트로 보내기 위한 전체 문장 
     for i in range(1, 10):
         s = "{} X {} = {}".format(dan, i, dan*i)
-        result = result + s + "<br>"
+        result = result + s + "\n"  
+        # \n-라인브레이크 -> <br>
 
     # result = """
     #   3 X 1 = 3 <br> 
