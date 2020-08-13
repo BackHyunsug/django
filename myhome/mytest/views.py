@@ -27,6 +27,7 @@ def gugu(request, dan):
     #   3 X 2 = 6 <br>
     #   3 X 3 = 9 <br> ....
     # """    
-    #return HttpResponse(result)
+    #return HttpResponse(result)\
+   
     data = {'dan':dan, 'result':result}
     return render(request, "mytest/gugu.html", data)
