@@ -17,26 +17,18 @@ from django.contrib import admin
 from django.urls import path, include 
 
 #bookmark 폴더의 views.py모듈을 가져와라 
-from bookmark import views 
+#.  같은 패키지 내의  views.py  불러와라 
+from . import views 
 
-
+# http://127.0.0.1:8000/bookmark 
 #path함수가 url, 연결할 뷰객체 또는 함수 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    #path('bookmark/', views.index),
-    #url 이 /bookmark라고 오면 bookmark안의 views라는 
-    #파일의 index 함수를 호출하라 
-
-    #http://127.0.0.1:8000/bookmark/test
-    #path('bookmark/test', views.test),
-
-    #http://127.0.0.1:8000/bookmark/myname
-    #path('bookmark/myname', views.myname),
-
-    #외부에서 bookmark 폴더 아래에 urls.py 을 include명령을 통해서 
-    #끼워넣기 
-    path("bookmark/", include('bookmark.urls')),
-    path("blog/", include('blog.urls')),
-    path("myinfo/", include('myinfo.urls')),
-
+    path('', views.index), #http://127.0.0.1:8000/myinfo
+    #http://127.0.0.1:8000/myinfo/add/3/4\
+    #add/<x>/<y>  이때 x, y 는 views.py  파일 아래에 
+    #add의 매개변수가 된다. 
+    path('add/<x>/<y>', views.add),
+    path('sigma/<num>', views.sigma)
 ]
+
+#http://127.0.0.1:8000/myinfo/sigma/10

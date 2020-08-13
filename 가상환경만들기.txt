@@ -1,0 +1,33 @@
+ 가상환경만들기 
+
+cmd 
+cd /
+mkdir virtual 
+cd /virtual 
+
+이상태에서 프롬프트가 
+c:/virtual 
+python -m venv mysite2
+
+이경로에 cd /virtual
+파일명 mysite2_start.bat 
+내용 c:/virtual/mysite2/Scripts/activate 
+파일명 mysite2_end.bat 
+내용 c:/virtual/mysite2/Scripts/deactivate 
+
+환경변수  path  에   c:\virtual; 
+
+mysite2를 활성화 시키고 
+c:> mysite2_start
+pip install django
+
+(mysite2) C:\virtual>cd \django_workspace
+
+(mysite2) C:\django_workspace>django-admin startproject myhome
+
+(mysite2) C:\django_workspace>                           
+
+
+
+
+

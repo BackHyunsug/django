@@ -1,0 +1,23 @@
+
+c:\django_workspace\mysite
+
+django-admin startapp myinfo
+
+settins.py  파일에 INSTALLED_APPS 이 부분에 앱을 등록시키고 
+blog  경로에  urls.py 
+
+mysite/urls.py에 include
+
+http://127.0.0.1:8000/blog
+It's my blog 
+
+http://127.0.0.1:8000/myinfo
+This is myinfo
+
+
+
+
+
+
+
+
