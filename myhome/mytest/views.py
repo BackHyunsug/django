@@ -33,6 +33,10 @@ def gugu(request, dan):
     data = {'dan':dan, 'result':result}
     return render(request, "mytest/gugu.html", data)
 
+#html파일에서 곱셈 어렵다. 
 def gugu2(request, dan):
-    return render(request, "mytest/gugu2.html", {'dan':dan})
-    
+    return render(request, "mytest/gugu2.html", 
+        {'dan':dan, 'range':range(1,10)} )
+
+
+
