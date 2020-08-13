@@ -32,3 +32,7 @@ def gugu(request, dan):
    
     data = {'dan':dan, 'result':result}
     return render(request, "mytest/gugu.html", data)
+
+def gugu2(request, dan):
+    return render(request, "mytest/gugu2.html", {'dan':dan})
+    
