@@ -6,8 +6,12 @@
     <title>Document</title>
 </head>
 <body>
+    
+    <!-- python 의 import 대신에 템플릿에서는 load -->
     {% load django_template_maths %}
-   
+
+    5 * 4 /2 +3 =  {{5 | mul:4 | div:2 | add:3 }}<br>
+
     {% for i in range %}
         {{dan}} X {{i}}   = {{dan|mul:i}}<br>
     {% endfor %}

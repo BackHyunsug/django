@@ -34,6 +34,19 @@ def gugu(request, dan):
     return render(request, "mytest/gugu.html", data)
 
 #html파일에서 곱셈 어렵다. 
+
+"""
+참고 url : https://pypi.org/project/django-template-maths/
+설치 : pip install django-template-maths
+
+settings.py
+INSTALLED_APPS = [
+...
+'django_template_maths',
+]
+"""
+
+
 def gugu2(request, dan):
     return render(request, "mytest/gugu2.html", 
         {'dan':dan, 'range':range(1,10)} )
