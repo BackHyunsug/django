@@ -38,5 +38,22 @@ def gugu2(request, dan):
     return render(request, "mytest/gugu2.html", 
         {'dan':dan, 'range':range(1,10)} )
 
+"""
+홍길동 010-0000-0000
+고길동 010-0000-0001
+김길동 010-0000-0002
+이길동 010-0000-0003
+"""
+dataList = [
+    {'name':'홍길동', 'phone':'010-0000-0000'},
+    {'name':'고길동', 'phone':'010-0000-0001'},
+    {'name':'이길동', 'phone':'010-0000-0002'},
+    {'name':'김길동', 'phone':'010-0000-0003'},
+    {'name':'장길동', 'phone':'010-0000-0004'},
+]
+
+def list(request):
+    return render(request, "mytest/list.html", {'dataList':dataList})
+
 
 
