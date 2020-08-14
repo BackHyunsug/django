@@ -14,13 +14,33 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
+#파일이 다르면 import  해줘야 한다 
+from . import views 
+
+#이 파일로 오는 모든 url은 /mytest
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('mytest/', include('mytest.urls')),
-    path('bookmark/', include('bookmark.bookmark_urls')),
-    path('guestbook/', include('guestbook.urls'))
+    path('', views.index),
+    path('gugu/<dan>', views.gugu),#http://127.0.0.1:8000/mytest/gugu/3 
+    path('gugu2/<dan>', views.gugu2),#http://127.0.0.1:8000/mytest/gugu2/3 
+    path('list', views.list), #http://127.0.0.1:8000/mytest/list 
+    
+    
     #앞으로 mytest/ 로 시작하는 모든 url은 
-    #mytest폴더아래의 urls.py  이 책임진다 
+    #mytest폴더아래의 urls.py  이 책임진다
+    #http://127.0.0.1:8000/mytest/    
+
 ]
+
+"""
+모든 url 요청은 view가 받아야 하는데 
+게시판 - view 
+게시판2 -  view
+회원가입 - view 
+......
+/board 
+/board1   또는 /board/1
+/member    
+특정 url이 올 경우 호출될 특정한 뷰는 urls.py 
+"""

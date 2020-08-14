@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     #사용자가 만든 앱을 등록하자 
     'mytest.apps.MytestConfig',
     'bookmark.apps.BookmarkConfig',
+    'guestbook.apps.GuestbookConfig',
     'django_template_maths',#연산용라이브러리 
 
     'django.contrib.admin',
