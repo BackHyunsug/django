@@ -1,0 +1,97 @@
+ 방명록 (guestbook)
+
+ 1. 
+ 프로젝트폴더 
+   /
+    ㄴ django_workspace
+    	ㄴ myhome 
+ cd \django_workspace\myhome
+ django-admin startapp guestbook
+
+    guestbook 
+       ㄴ apps.py        앱클래스를 settings.py에 등록
+       ㄴ models.py      Guestbook(models.Model)상속받기 
+       ㄴ views.py       클래스뷰,GuestbookLV, GuestbookDV
+                                (ListView) (DetailView)
+       ㄴ admin.py       GuestbookAdmin  만들어서 등록
+       ㄴ 새로추가 - urls.py 
+
+ 2. settins.py  에 앱등록 
+	guestbook폴더의 apps.py안의 클래스를 등록
+ 3. models.py에 Guestbook(models.Model) 
+ 필드등 정의하고 
+ python manage.py makemigrations
+ python manage.py migrate 
+
+ python manage.py runserver
+
+4. urls.py 파일을 guestbook에 추가하자 
+from django.contrib import admin
+from django.urls import path, include
+from . import views 
+
+urlpatterns = [
+   
+]
+
+5. myhome/urls.py 파일에 위의 파일을 include 해야 한다 
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('mytest/', include('mytest.urls')),
+    path('bookmark/', include('bookmark.bookmark_urls')),
+    #----  추가
+    path('guestbook/', include('guestbook.urls'))
+    #앞으로 mytest/ 로 시작하는 모든 url은 
+    #mytest폴더아래의 urls.py  이 책임진다 
+]
+python manage.py runserver
+
+
+6.admin.py에 클래스 등록하기 
+
+from guestbook.models import Guestbook
+
+@admin.register(Guestbook)
+class GuestbookAdmin(admin.ModelAdmin):
+    list_display('title', 'writer', 'contents')
+
+7.views.py
+#------------------------ 추가하기 
+from django.views.generic import ListView, DetailView 
+from guestbook.models import GuestbookModel
+
+class GuestbookLV(ListView):
+    model = GuestbookModel #필요최소한 요구사항 
+
+class GuestbookDV(DetailView):
+    model = GuestbookModel #필요최소한 요구사항 
+
+8.urls.py
+from django.contrib import admin
+from django.urls import path, include
+from . import views 
+
+from guestbook.views import GuestbookLV, GuestbookDV 
+
+urlpatterns = [
+   path("", views.index),
+    path('list', GuestbookLV.as_view()),
+    path('detail/<int:pk>', GuestbookDV.as_view())
+]
+
+
+9.   
+
+#templates/guestbook 아래에 파일 두개 만들기 
+#guestbookmodel_list.html,
+ <div id="content">
+        <ul>
+            {% for object in object_list %}
+            <li><a href="/guestbook/detail/{{object.id}}">{{object.title}}</a>
+             &nbsp;&nbsp;&nbsp; {{object.writer}}</li>
+            {%endfor%}
+        </ul>
+
+    </div id>
+#guestbookmodel_detail.html,
+

@@ -1,0 +1,296 @@
+데이터베이스를 mysql로 옮기기
+함수뷰를 사용해서 정밀하게 데이터베이스 제어 
+form태그를 이용해서 게시판에 글쓰기 
+페이징까지 
+
+pip install django 
+
+mysite2_start
+(mysite2)c:/users/user>
+cd \django_workspace
+django-admin startproject myhome2
+cd myhome2        ----          경로이동
+python manage.py makemigrations 
+ -- 디비에 반영할 마이그레이션 정보 만들기
+ -- 모델 클래스 수정할때마다 호출해야한다 
+python manage.py migrate 
+ -- 실제 디비에 반영된다 
+python manage.py runserver 
+ -- 서버실행 
+브라우저에서 http://127.0.0.1:8000/
+
+모든 환경설정은 settings.py  파일에서 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mydb',
+        'USER': 'user01',
+        'PASSWORD':'1234',
+        'HOST':'localhost',
+        'PORT':'5306'
+    }
+}
+
+-- 디비 바꿔면 mysqlclient 설치해야 한다 
+pip install mysqlclient 
+
+python manage.py makemigrations
+python manage.py migrate 
+
+grant all privileges on mydb.* to user01@localhost identified by '1234';
+
+c:/django_workspace
+      ㄴ myhome2
+           ㄴ manage.py 
+           ㄴ myhome2
+                 ㄴ settings.py
+                 ㄴ urls.py 
+
+새로운 앱을 추가하자 - board (CRUD-create read update delete)
+(mysite2)c:/django_workspace/myhome2> django-admin startapp board
+
+board 라는 앱이 만들어진다. 
+
+1. 앱등록 (settings.py) 
+INSTALLED_APPS = [
+    'board.apps.BoardConfig',
+
+이 부분에 현재 등록한 앱정보를 등록해야 한다 
+'board.apps.BoardConfig'
+board라는 앱을 만들면 
+board 폴더아래에 apps.py 파일이 만들어지고 
+BoardConfig 클래스가 만들어진다. 
+board 
+  ㄴapps.py 
+       BoardConfig 
+앱의 이름이 board.apps.BoardConfig 
+        앱이름(폴더명).파일명.클래스명 
+
+2. 모델클래스를 먼저 만들고 
+c:/django_workspace/myhome2/board/models.py 
+
+class Board(models.Model):
+    title = models.CharField("제목", max_length=200)
+    contents = models.TextField("내용")
+    wdate = models.DateTimeField("작성일", auto_now=False, auto_now_add=False) 
+    writer = models.CharField("작성자", max_length=50) 
+    hit = models.IntegerField("조회수")
+
+    #__str__ 함수 overriding 
+    def __str__(self):
+        return self.title + " " + self.writer 
+
+#모델클래스만들면 python manage.py makemigrations
+board   아래에 migrations 폴더만들고 0001_inital.py  파일을 만든다  
+#                python manage.py migrate
+위의 파일을 기반으로 실제 데이터베이스에 테이블을 만드는 명령어는 migrate이다 
+
+3. urls.py 파일 만들어서 
+  myhome2  아래의 urls.py와 연결작업을 하자 
+#/myhome2/board/urls.py 
+from django.contrib import admin
+from django.urls import path 
+
+# . 현재 나와 같은 경로에 있는   views.py 를 import 해라 
+from . import views 
+
+app_name = 'board'  # 앱이름 줘야한다. 맨처음 django-admin startapp board 이름
+
+#url와 view를 연결짓는 부분이다. 
+urlpatterns = [
+    path('', views.index)  #path함수가 url과  view의 함수나 클래스를 
+                          #연결시킨다. 
+]
+
+4. myhome2/urls.py 수정
+from django.contrib import admin
+from django.urls import path
+from django.urls import include ########################
+
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('board/', include('board.urls')) ###############
+]
+
+5. board/views.py  index함수 추가하기
+
+python manage.py runserver 
+http://127.0.0.1:8000/board 
+
+
+6. 
+c:/django_workspace/myhome2
+                 ㄴ  templates   폴더를 만들고 
+                       ㄴ board 
+                            ㄴboard_list.html
+                            ㄴboard_view.html
+                            ㄴboard_write.html
+
+settings.py 파일안에 TEMPLATES  에 다음 코드 추가  
+
+import os  ################################
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],###############
+
+
+7.사이트에서 제공해주는 admin 을 사용해보자 
+python manage.py createsuperuser
+admin/qwer1234   
+admin@myhome2.com 
+
+http://127.0.0.1:8000/admin
+
+8.admin 쪽에서 board_board  테이블 보이게 
+board/admin.py 
+
+from .models import Board 
+class BoardAdmin(admin.ModelAdmin):
+    search_fields =['title']
+
+admin.site.register(Board, BoardAdmin)
+
+9.데이터 추가 
+
+ALTER TABLE board_board convert to charset utf8;
+delete from board_board; 
+select * from board_board;
+
+
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+insert into board_board (title, writer, contents, wdate, hit)
+values('제목1', '작성자', '내용1', now(), 0);
+
+
+10.views.py파일에서 함수뷰를 사용해서 데이터를 가져오기 
+
+테스트방법 제공 
+서버 끄고, 가상화 작동중인 상태로 
+(mysite2)C:/django_workspace/myhome2
+
+python manage.py shell 
+콘솔창에서 
+from board.models import Board
+Board.objects.all() #테이블에 있는 모든 데이터를 갖고 있다.
+데이터가 100만건 있으면 100만건을 
+우리가 원하는건 페이지를 지정하면 지정한 페이지 건수만 와야 한다 
+limit  라는 구문을 사용해야 한다 
+queryset = Board.objects.all() 
+str(queryset.query)
+
+#직접연결객체를 안만들고 장고가 이미 연결객체를 갖고 있어서 이걸 가져온다 
+from django.db import connection
+
+cursor = connection.cursor() 
+cursor.execute('select * from board_board limit 0,5 ')
+board_list = cursor.fetchall()
+print(board_list)
+#메타정보 
+print(cursor.description)
+
+#(('id', 3, 3, 11, 11, 0, 0), ('title', 253, 7, 600, 600, 0, 0), ('contents', 252, 7, -1, -1, 0, 0), ('wdate', 12, 26, 26, 26, 6, 0), ('writer', 253, 9, 150, 150, 0, 0), ('hit', 3, 1, 11, 11, 0, 0))
+columns=list()
+for col in cursor.description:
+    print(col[0]) # ('id', 3, 3, 11, 11, 0, 0)
+    columns.append( col[0] )
+
+columns = [ col[0] for col in cursor.description ]
+print(columns) #['id', 'title', 'writer', 'contents'] 
+
+cursor.execute('select * from board_board limit 0,5 ')
+for row in cursor.fetchall():
+    print(row)
+"""
+['id', 'title', 'writer', 'contents'] #columns 
+
+(254, '제목1', '내용1', datetime.datetime(2020, 8, 24, 15, 21, 45), '작성자', 0)
+(255, '제목1', '내용1', datetime.datetime(2020, 8, 24, 15, 21, 45), '작성자', 0)
+(256, '제목1', '내용1', datetime.datetime(2020, 8, 24, 15, 21, 45), '작성자', 0)
+(257, '제목1', '내용1', datetime.datetime(2020, 8, 24, 15, 21, 45), '작성자', 0)
+(258, '제목1', '내용1', datetime.datetime(2020, 8, 24, 15, 21, 45), '작성자', 0)
+"""
+a = ['id', 'title', 'contents', 'wdate', 'writer', 'hit']
+row = (254, '제목1', '내용1', datetime.datetime(2020, 8, 24, 15, 21, 45), '작성자', 0)
+mydict = dict(zip(a, row))
+print(mydict)
+for key in mydict:
+    print(key, mydict[key])
+  
+cursor.execute('select * from board_board limit 0,5 ')
+board_list= [dict( zip(columns, row)) for row in cursor.fetchall()]
+print(board_list)
+
+
+
+장고에서 사용하는  mysqlclient 라이브러리가 무조건 tuple타입으로 
+데이터를 가져온다 
+
+#디비에서 가져온 데이터를  tuple->dict 으로 바꾸는 함수 
+def dictfetchall(cursor):
+    "Return all rows from a cursor as a dict"
+    #테이블의 열에대한 정보를 가져와야 한다 
+    columns = [ col[0] for col in cursor.description ]
+    #간략화한  list 
+    return [ dict( zip(columns, row)) for row in cursor.fetchall()]
+    #columns = ['id', 'title', 'writer', 'wdate', 'hit', 'contents']
+    #((1, '제목1', '작성자', '2020-08-24', 0), )
+    #[{'id':'1', 'title':'제목1', ,,,,}
+
+board/views.py 
+from django.db import connection
+def list(request):
+    sql = '''
+    select id, title, writer, contents, hit, wdate
+    from board_board 
+    limit 0, 10 
+    '''
+    #limit  시작위치, 개수 
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    board_list = dictfetchall(cursor)
+
+    context = {'board_list':board_list}
+    return render(request, 'board/board_list.html', context)
