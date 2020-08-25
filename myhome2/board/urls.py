@@ -14,7 +14,8 @@ urlpatterns = [
     path('list', views.list, name="board_list"),
     path('view/<int:id>', views.view, name="board_view"),   
     # 최신 : <a href="/board/view/1">제목1</a>         
-    # 옛날 : <a href="/board/view?id=1">제목1</a>         
-    
+    # 옛날 : <a href="/board/view?id=1">제목1</a>      
+    path('write', views.write, name="board_write"), #등록폼으로 이동
+    path('save', views.save, name="board_save"), #디비에 등록하기 
 ]
 

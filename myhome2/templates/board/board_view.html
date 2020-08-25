@@ -27,24 +27,21 @@
       <tr>
       	<td>제목</td>
         <td>
-			  제목1
+			  {{board_item.title}}
   		</td>
      </tr>      
       <tr >
         <td>작성자</td>
-        <td>
-			  홍길동
-  		</td>
-     
+        <td>{{board_item.writer}}</td>
+      <tr>
+        <td>조회수</td>
+        <td>{{board_item.hit}}</td>
       </tr>
-      <tr >
+      <tr>
         <td>내용</td>
         <td> 
-        	내용1<br>
-			내용2<br>
-			내용3<br>
-
-		</td>
+        {{board_item.contents}}
+		    </td>
       
       </tr>
      

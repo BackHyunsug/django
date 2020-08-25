@@ -17,8 +17,7 @@
   <h2>게시판 글쓰기</h2>
   <p></p>
   <form name="form" method="post">
-
-
+   {%csrf_token%}
   <table class="table">
   	<colgroup>
   		<col width="25%"/>
@@ -38,7 +37,7 @@
         <td>작성자</td>
         <td>
 			  <div class="input-group mb-3">
-			    <input type="text" class="form-control" placeholder="이름을 입력하세요" name="userid">
+			    <input type="text" class="form-control" placeholder="이름을 입력하세요" name="writer">
 			  </div>
   		</td>
      
